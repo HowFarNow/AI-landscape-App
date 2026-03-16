@@ -191,7 +191,7 @@ export default function App() {
       }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: 96, width: "auto" }} />
+            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: 150, width: "auto" }} />
             <div style={{ width: 1, height: 44, background: "#1e3a5f" }} />
             <div>
               <div style={{ fontSize: 10, letterSpacing: "0.15em", color: "#475569", textTransform: "uppercase", marginBottom: 3 }}>Landscape attributed to</div>
