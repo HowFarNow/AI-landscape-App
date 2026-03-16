@@ -1,5 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import pragmatexLogo from "./assets/Pragmatex Logo White - strap.svg";
+import { createClient } from "@supabase/supabase-js";
+
+const SUPABASE_URL = "https://covaqywyfjjdegxbytwo.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNvdmFxeXd5ZmpqZGVneGJ5dHdvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MDg1ODAsImV4cCI6MjA4ODk4NDU4MH0.2VymaiGoUnVv6DJYxPJ-3An7ZjEmEh3Q2swtBp3cr30";
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const USE_CASES = [
   { id: 1, label: "Low adhesion detection", category: "org", function: "operational", dimension: "efficiency" },
@@ -86,9 +91,16 @@ export default function App() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const vRes = await window.storage.get("rssb_votes");
-      if (vRes) setVotes(JSON.parse(vRes.value));
-    } catch {}
+      const { data, error } = await supabase
+        .from("votes")
+        .select("use_case_id, vote_count");
+      if (error) throw error;
+      const voteMap = {};
+      data.forEach(row => { voteMap[row.use_case_id] = row.vote_count; });
+      setVotes(voteMap);
+    } catch (e) {
+      console.error("Failed to load votes:", e);
+    }
     try {
       const gRes = await window.storage.get("rssb_gaps");
       if (gRes) setGaps(JSON.parse(gRes.value));
@@ -109,17 +121,24 @@ export default function App() {
 
   const submitVotes = async () => {
     if (selected.length === 0) return;
-    const current = { ...votes };
-    selected.forEach(id => {
-      current[id] = (current[id] || 0) + 1;
-    });
     try {
-      await window.storage.set("rssb_votes", JSON.stringify(current), true);
-      setVotes(current);
+      // Increment vote_count for each selected use case using Supabase RPC
+      await Promise.all(selected.map(async (id) => {
+        const { error } = await supabase.rpc("increment_vote", { row_use_case_id: id });
+        if (error) throw error;
+      }));
+      // Reload votes from Supabase to reflect updated counts
+      const { data, error } = await supabase
+        .from("votes")
+        .select("use_case_id, vote_count");
+      if (error) throw error;
+      const voteMap = {};
+      data.forEach(row => { voteMap[row.use_case_id] = row.vote_count; });
+      setVotes(voteMap);
       setSubmitted(true);
       setTimeout(() => setView("results"), 800);
     } catch (e) {
-      console.error(e);
+      console.error("Failed to submit votes:", e);
     }
   };
 
@@ -172,7 +191,7 @@ export default function App() {
       }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: 96, width: "auto" }} />
+            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: 48, width: "auto" }} />
             <div style={{ width: 1, height: 44, background: "#1e3a5f" }} />
             <div>
               <div style={{ fontSize: 10, letterSpacing: "0.15em", color: "#475569", textTransform: "uppercase", marginBottom: 3 }}>Landscape attributed to</div>
