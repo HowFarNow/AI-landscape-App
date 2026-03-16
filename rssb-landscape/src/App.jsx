@@ -56,7 +56,7 @@ const USE_CASES = [
   { id: 52, label: "Automated conflict resolution in standards processes", category: "org", function: "business", dimension: "new" },
 ];
 
-const SHARE_URL = "https://claude.ai"; // Replace with hosted URL
+const SHARE_URL = "https://rssbaivote.vercel.app"; // Replace with hosted URL
 
 const DIM_COLORS = {
   efficiency: { bg: "#0a2a1a", border: "#22c55e", text: "#4ade80", label: "Create Efficiency", accent: "#16a34a" },
