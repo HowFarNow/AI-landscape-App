@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import pragmatexLogo from "./assets/Pragmatex Logo White - strap.svg";
 
 const USE_CASES = [
   { id: 1, label: "Low adhesion detection", category: "org", function: "operational", dimension: "efficiency" },
@@ -171,7 +172,7 @@ export default function App() {
       }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <img src="./assets/Pragmatex Logo White - strap.png" alt="Pragmatex" style={{ height: 48, width: "auto" }} />
+            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: 48, width: "auto" }} />
             <div style={{ width: 1, height: 44, background: "#1e3a5f" }} />
             <div>
               <div style={{ fontSize: 10, letterSpacing: "0.15em", color: "#475569", textTransform: "uppercase", marginBottom: 3 }}>Landscape attributed to</div>
