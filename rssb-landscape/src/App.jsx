@@ -102,9 +102,15 @@ export default function App() {
       console.error("Failed to load votes:", e);
     }
     try {
-      const gRes = await window.storage.get("rssb_gaps");
-      if (gRes) setGaps(JSON.parse(gRes.value));
-    } catch {}
+      const { data: gapsData, error: gapsError } = await supabase
+        .from("gaps")
+        .select("id, text, dimension, function, created_at")
+        .order("created_at", { ascending: true });
+      if (gapsError) throw gapsError;
+      setGaps(gapsData || []);
+    } catch (e) {
+      console.error("Failed to load gaps:", e);
+    }
     setLoading(false);
   }, []);
 
@@ -144,16 +150,18 @@ export default function App() {
 
   const submitGap = async () => {
     if (!gapText.trim()) return;
-    const newGap = { text: gapText.trim(), dim: gapDim, func: gapFunc, ts: Date.now() };
-    const updated = [...gaps, newGap];
     try {
-      await window.storage.set("rssb_gaps", JSON.stringify(updated), true);
-      setGaps(updated);
+      const { data, error } = await supabase
+        .from("gaps")
+        .insert([{ text: gapText.trim(), dimension: gapDim, function: gapFunc }])
+        .select();
+      if (error) throw error;
+      setGaps(prev => [...prev, data[0]]);
       setGapText("");
       setGapSubmitted(true);
       setTimeout(() => setGapSubmitted(false), 3000);
     } catch (e) {
-      console.error(e);
+      console.error("Failed to submit gap:", e);
     }
   };
 
@@ -420,7 +428,7 @@ export default function App() {
                 ) : (
                   <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 400, overflowY: "auto" }}>
                     {[...gaps].reverse().map((g, i) => {
-                      const dc = DIM_COLORS[g.dim];
+                      const dc = DIM_COLORS[g.dimension];
                       return (
                         <div key={i} style={{
                           background: "#0f1923", border: `1px solid ${dc.border}30`,
@@ -429,8 +437,8 @@ export default function App() {
                           <div style={{ fontSize: 11, color: "#cbd5e1", lineHeight: 1.4, marginBottom: 4 }}>{g.text}</div>
                           <div style={{ display: "flex", gap: 8 }}>
                             <span style={{ fontSize: 9, color: dc.text, background: `${dc.border}18`, padding: "2px 6px", borderRadius: 3 }}>{dc.label}</span>
-                            <span style={{ fontSize: 9, color: g.func === "operational" ? "#60a5fa" : "#a78bfa", background: g.func === "operational" ? "#1e3a5f" : "#2e1a5f", padding: "2px 6px", borderRadius: 3 }}>
-                              {g.func === "operational" ? "Operational" : "Business Support"}
+                            <span style={{ fontSize: 9, color: g.function === "operational" ? "#60a5fa" : "#a78bfa", background: g.function === "operational" ? "#1e3a5f" : "#2e1a5f", padding: "2px 6px", borderRadius: 3 }}>
+                              {g.function === "operational" ? "Operational" : "Business Support"}
                             </span>
                           </div>
                         </div>
@@ -552,7 +560,7 @@ export default function App() {
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   {[...gaps].reverse().slice(0, 5).map((g, i) => {
-                    const dc = DIM_COLORS[g.dim];
+                    const dc = DIM_COLORS[g.dimension];
                     return (
                       <div key={i} style={{
                         background: "#0a1520", border: `1px solid ${dc.border}30`,
