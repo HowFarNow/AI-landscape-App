@@ -56,7 +56,7 @@ const USE_CASES = [
   { id: 52, label: "Automated conflict resolution in standards processes", category: "org", function: "business", dimension: "new" },
 ];
 
-const SHARE_URL = "https://claude.ai"; // Replace with hosted URL
+const SHARE_URL = "https://rssbaivote.vercel.app/";
 
 const DIM_COLORS = {
   efficiency: { bg: "#0a2a1a", border: "#22c55e", text: "#4ade80", label: "Create Efficiency", accent: "#16a34a" },
@@ -172,7 +172,7 @@ export default function App() {
       }}>
         <div style={{ maxWidth: 1400, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: "auto", width: "auto" }} />
+            <img src={pragmatexLogo} alt="Pragmatex" style={{ height: 48, width: "auto" }} />
             <div style={{ width: 1, height: 44, background: "#1e3a5f" }} />
             <div>
               <div style={{ fontSize: 10, letterSpacing: "0.15em", color: "#475569", textTransform: "uppercase", marginBottom: 3 }}>Landscape attributed to</div>
@@ -218,32 +218,32 @@ export default function App() {
               display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12,
             }}>
               <div>
-                <div style={{ fontSize: 13, color: "#93c5fd", fontWeight: 600, marginBottom: 4 }}>
+                <div style={{ fontSize: 15, color: "#93c5fd", fontWeight: 600, marginBottom: 4 }}>
                   Cast your votes — select your top 3 applications
                 </div>
-                <div style={{ fontSize: 11, color: "#475569" }}>
+                <div style={{ fontSize: 13, color: "#475569" }}>
                   Click any application to select it. Choose up to 3, then submit your votes.
                 </div>
               </div>
               <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
                 <div style={{ display: "flex", gap: 12 }}>
-                  <span style={{ fontSize: 11, color: "#94a3b8" }}>● Org Use Case</span>
-                  <span style={{ fontSize: 11, color: "#c084fc" }}>● Big Opportunity</span>
+                  <span style={{ fontSize: 13, color: "#94a3b8" }}>🏢 Org Use Case</span>
+                  <span style={{ fontSize: 13, color: "#c084fc" }}>🚀 Big Opportunity</span>
                 </div>
                 <div style={{
                   background: selected.length === 3 ? "#1e3a5f" : "#0f1923",
                   border: `1px solid ${selected.length > 0 ? "#3b82f6" : "#1e3a5f"}`,
                   borderRadius: 8, padding: "8px 16px", display: "flex", alignItems: "center", gap: 12,
                 }}>
-                  <span style={{ fontSize: 13, color: "#64748b" }}>
+                  <span style={{ fontSize: 15, color: "#64748b" }}>
                     {submitted ? "✅ Votes submitted!" : `${selected.length} / 3 selected`}
                   </span>
                   {!submitted && (
                     <button onClick={submitVotes} disabled={selected.length === 0} style={{
                       background: selected.length > 0 ? "linear-gradient(135deg, #3b82f6, #06b6d4)" : "#1e293b",
                       color: selected.length > 0 ? "#fff" : "#334155",
-                      border: "none", borderRadius: 6, padding: "6px 14px",
-                      fontSize: 12, fontWeight: 700, cursor: selected.length > 0 ? "pointer" : "default",
+                      border: "none", borderRadius: 6, padding: "8px 18px",
+                      fontSize: 14, fontWeight: 700, cursor: selected.length > 0 ? "pointer" : "default",
                       letterSpacing: "0.05em", transition: "all 0.2s",
                     }}>SUBMIT →</button>
                   )}
@@ -255,7 +255,7 @@ export default function App() {
             <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
               {[["all", "#64748b", "All"], ["efficiency", "#4ade80", "Create Efficiency"], ["improve", "#fcd34d", "Improve Existing"], ["new", "#67e8f9", "Enabling New"]].map(([key, color, label]) => (
                 <button key={key} onClick={() => setFilterDim(key)} style={{
-                  padding: "5px 12px", borderRadius: 20, fontSize: 11, letterSpacing: "0.05em",
+                  padding: "7px 14px", borderRadius: 20, fontSize: 13, letterSpacing: "0.05em",
                   border: `1px solid ${filterDim === key ? color : "#1e3a5f"}`,
                   background: filterDim === key ? `${color}20` : "transparent",
                   color: filterDim === key ? color : "#475569",
@@ -273,7 +273,7 @@ export default function App() {
                   paddingLeft: 4,
                 }}>
                   <div style={{ width: 3, height: 20, background: fn === "operational" ? "#3b82f6" : "#8b5cf6", borderRadius: 2 }} />
-                  <span style={{ fontSize: 11, letterSpacing: "0.15em", color: fn === "operational" ? "#60a5fa" : "#a78bfa", textTransform: "uppercase", fontWeight: 700 }}>
+                  <span style={{ fontSize: 13, letterSpacing: "0.15em", color: fn === "operational" ? "#60a5fa" : "#a78bfa", textTransform: "uppercase", fontWeight: 700 }}>
                     {fn === "operational" ? "Operational Railway" : "Business Support Functions"}
                   </span>
                 </div>
@@ -287,9 +287,9 @@ export default function App() {
                         background: dc.bg,
                         border: `1px solid ${dc.border}30`,
                         borderTop: `2px solid ${dc.border}`,
-                        borderRadius: 8, padding: 10, minHeight: 160,
+                        borderRadius: 8, padding: 12, minHeight: 160,
                       }}>
-                        <div style={{ fontSize: 10, letterSpacing: "0.12em", color: dc.text, textTransform: "uppercase", fontWeight: 700, marginBottom: 8, opacity: 0.9 }}>
+                        <div style={{ fontSize: 12, letterSpacing: "0.12em", color: dc.text, textTransform: "uppercase", fontWeight: 700, marginBottom: 10, opacity: 0.9 }}>
                           {dc.label}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -303,22 +303,24 @@ export default function App() {
                                 onMouseEnter={() => setHoveredId(uc.id)}
                                 onMouseLeave={() => setHoveredId(null)}
                                 style={{
-                                  padding: "6px 8px",
+                                  padding: "8px 8px",
                                   borderRadius: 5,
                                   border: isSelected ? `1px solid ${dc.border}` : `1px solid transparent`,
                                   background: isSelected ? `${dc.border}18` : isHovered ? "#ffffff08" : "transparent",
                                   cursor: submitted ? "default" : "pointer",
                                   transition: "all 0.12s",
-                                  display: "flex", alignItems: "flex-start", gap: 6,
+                                  display: "flex", alignItems: "flex-start", gap: 7,
                                 }}
                               >
-                                <span style={{ fontSize: 7, color: CAT_COLORS[uc.category].dot, marginTop: 3, flexShrink: 0 }}>●</span>
-                                <span style={{ fontSize: 11, color: isSelected ? "#f1f5f9" : "#94a3b8", lineHeight: 1.4, flex: 1 }}>
+                                <span style={{ fontSize: 13, marginTop: 1, flexShrink: 0 }}>
+                                  {uc.category === "org" ? "🏢" : "🚀"}
+                                </span>
+                                <span style={{ fontSize: 13, color: isSelected ? "#f1f5f9" : "#94a3b8", lineHeight: 1.45, flex: 1 }}>
                                   {uc.label}
                                 </span>
-                                {isSelected && <span style={{ fontSize: 10, color: dc.text, flexShrink: 0 }}>✓</span>}
+                                {isSelected && <span style={{ fontSize: 13, color: dc.text, flexShrink: 0 }}>✓</span>}
                                 {voteCount > 0 && !isSelected && (
-                                  <span style={{ fontSize: 9, color: "#475569", flexShrink: 0 }}>{voteCount}v</span>
+                                  <span style={{ fontSize: 11, color: "#475569", flexShrink: 0 }}>{voteCount}v</span>
                                 )}
                               </div>
                             );
@@ -378,7 +380,7 @@ export default function App() {
                           }} />
                           <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 8, padding: "5px 8px" }}>
                             <span style={{ fontSize: 10, color: "#334155", width: 16, flexShrink: 0, textAlign: "right" }}>#{i + 1}</span>
-                            <span style={{ fontSize: 7, color: CAT_COLORS[uc.category].dot, flexShrink: 0 }}>●</span>
+                            <span style={{ fontSize: 11, flexShrink: 0 }}>{uc.category === "org" ? "🏢" : "🚀"}</span>
                             <span style={{ fontSize: 11, color: "#94a3b8", flex: 1, lineHeight: 1.3 }}>{uc.label}</span>
                             <span style={{ fontSize: 12, fontWeight: 700, color: dc.text, flexShrink: 0 }}>{uc.voteCount}</span>
                           </div>
